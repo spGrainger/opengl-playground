@@ -7,13 +7,12 @@
 #include <gl/glut.h>                    // include freeglut libraries
 #endif
 
-#include "Tree.h"
-
 #include <string>
 #include <map>
-
+#include "DisplayableObject.h"
 #include <stdio.h>
-map<string, DisplayableObject*> objects;
+
+std::map<std::string, DisplayableObject*> objects;
 
 void setup();
 void draw();

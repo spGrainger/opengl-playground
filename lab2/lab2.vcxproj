@@ -121,16 +121,12 @@
   <ItemGroup>
     <ClCompile Include="DisplayableObject.cpp" />
     <ClCompile Include="MyScene.cpp" />
-    <ClCompile Include="parse_stl.cpp" />
-    <ClCompile Include="StlDisplayableObject.cpp" />
-    <ClCompile Include="Tree.cpp" />
+    <ClCompile Include="Wall.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DisplayableObject.h" />
     <ClInclude Include="MyScene.h" />
-    <ClInclude Include="parse_stl.h" />
-    <ClInclude Include="StlDisplayableObject.h" />
-    <ClInclude Include="Tree.h" />
+    <ClInclude Include="Wall.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,8 +1,9 @@
 #include "math.h"
 #include "MyScene.h"
-#include "StlDisplayableObject.h"
 #define _USE_MATH_DEFINES
 #include <cmath>
+
+#include "Wall.h"
 
 void setup()
 {
@@ -10,13 +11,8 @@ void setup()
 	glutInitWindowSize(600, 400);
 	glutCreateWindow("lab 2");
 	
-	//Tree* tree;
-	//tree = new Tree();            
-	//objects["tree"] = tree;
-
-	StlDisplayableObject* stlObj = new StlDisplayableObject("./bust.stl");
-	objects["cube"] = stlObj;
-
+	Wall* wall = new Wall();
+	objects["wall"] = wall;
 }
 
 void reshape(int _width, int _height)
@@ -29,14 +25,13 @@ void reshape(int _width, int _height)
 	GLdouble aspect = static_cast<GLdouble>(width) / static_cast<GLdouble>(height);
 
 	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();     // reset matrix
+	glLoadIdentity();			// reset matrix
 	gluPerspective(45.0, aspect, 1, 1000);
 	glMatrixMode(GL_MODELVIEW); // return matrix mode to modelling and viewing
 }
 
 void drawObjects() {
-	glColor3f(0.f, 0.f, 0.f);
-	for (map <string, DisplayableObject*>::iterator itr = objects.begin(); itr != objects.end(); ++itr)
+	for (std::map <std::string, DisplayableObject*>::iterator itr = objects.begin(); itr != objects.end(); ++itr)
 	{
 		itr->second->display();
 	}
@@ -44,7 +39,8 @@ void drawObjects() {
 
 void drawShapes()
 {
-	glRotatef(0.4f, 0.f, 1.f, 0.f);
+	//glRotatef(0.4f, 0.f, 1.f, 0.f);
+
 	drawObjects();
 	glutPostRedisplay();
 }
@@ -55,7 +51,7 @@ float num2 = 0;
 void draw()
 {
 	glMatrixMode(GL_MODELVIEW);
-	glClearColor(1.f, 1.f, 1.f, 1.f);
+	glClearColor(0.3f, 0.3f, 0.5f, 1.f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	drawShapes();
 	checkGLError();
@@ -65,25 +61,22 @@ void draw()
 
 int main(int argc, char **argv)
 {
-	glutInit(&argc, argv);          // Initialise GL environment
-	setup();                        // Call additional initialisation commands
-	glutDisplayFunc(draw);          // Register scene to render contents of draw() function
-	checkGLError();                 // Check any OpenGL errors in initialisation
+	glutInit(&argc, argv);
+	setup();
+	glutDisplayFunc(draw);
+	checkGLError();
 	glutReshapeFunc(reshape);
 	glLoadIdentity();
 	glTranslatef(0.f, 0.f, -15.f);
-	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	glClearColor(0.0, 0.0, 0.0, 0.0);
-	
-	// Create light components.
-	GLfloat ambientLight[] = { 1.0f, 0.0f, 0.0f };
-	GLfloat diffuseLight[] = { 0.8f, 0.8f, 0.8f, 1.0f };
-	GLfloat position[] = { 10.0f, 10.0f, 10.0f, 1.0f };
+	GLfloat diffuse[]  = { 1.f, 1.f, 1.f, 1.f };
+	GLfloat specular[] = { 1.f, 1.f, 1.f, 1.f };
+	GLfloat ambient[]  = { 0.f, 0.f, 0.f, 1.f };
+	GLfloat position[] = { -10.f, 10.f, 0.f, 1.0f };
 
-	// Assign created components to GL_LIGHT0.
-	glLightfv(GL_LIGHT0, GL_AMBIENT, ambientLight);
-	glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuseLight);
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse);
+	glLightfv(GL_LIGHT0, GL_AMBIENT, ambient);
+	glLightfv(GL_LIGHT0, GL_SPECULAR, specular);
 	glLightfv(GL_LIGHT0, GL_POSITION, position);
 
 	glEnable(GL_DEPTH_TEST);
