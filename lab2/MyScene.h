@@ -7,17 +7,17 @@
 #include <gl/glut.h>                    // include freeglut libraries
 #endif
 
+#include <stdio.h>
 #include <string>
 #include <map>
+
 #include "DisplayableObject.h"
-#include <stdio.h>
+#include "Wall.h"
 
 std::map<std::string, DisplayableObject*> objects;
 
 void setup();
 void draw();
 int main(int argc, char **argv);
-void checkGLError();                        // Prints any OpenGL errors to console
-
 
 #endif

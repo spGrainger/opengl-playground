@@ -1,9 +1,5 @@
-#include "math.h"
 #include "MyScene.h"
 #define _USE_MATH_DEFINES
-#include <cmath>
-
-#include "Wall.h"
 
 void setup()
 {
@@ -37,26 +33,30 @@ void drawObjects() {
 	}
 }
 
-void drawShapes()
-{
-	//glRotatef(0.4f, 0.f, 1.f, 0.f);
-
-	drawObjects();
-	glutPostRedisplay();
-}
-
-float num = 0;
-float num2 = 0;
-
 void draw()
 {
 	glMatrixMode(GL_MODELVIEW);
 	glClearColor(0.3f, 0.3f, 0.5f, 1.f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	drawShapes();
-	checkGLError();
 
+	drawObjects();
+	glutPostRedisplay();
 	glutSwapBuffers();
+}
+
+void setupLighting() {
+	GLfloat diffuse[] =  { 1.f, 1.f, 1.f, 1.f };
+	GLfloat specular[] = { 1.f, 1.f, 1.f, 1.f };
+	GLfloat ambient[] =  { 0.f, 0.f, 0.f, 1.f };
+	GLfloat position[] = { -10.f, 10.f, 0.f, 1.0f };
+
+	glLightfv(GL_LIGHT0, GL_DIFFUSE,  diffuse);
+	glLightfv(GL_LIGHT0, GL_AMBIENT,  ambient);
+	glLightfv(GL_LIGHT0, GL_SPECULAR, specular);
+	glLightfv(GL_LIGHT0, GL_POSITION, position);
+
+	glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHT0);
 }
 
 int main(int argc, char **argv)
@@ -64,37 +64,13 @@ int main(int argc, char **argv)
 	glutInit(&argc, argv);
 	setup();
 	glutDisplayFunc(draw);
-	checkGLError();
 	glutReshapeFunc(reshape);
+	glEnable(GL_DEPTH_TEST);
+	setupLighting();
+
 	glLoadIdentity();
 	glTranslatef(0.f, 0.f, -15.f);
-
-	GLfloat diffuse[]  = { 1.f, 1.f, 1.f, 1.f };
-	GLfloat specular[] = { 1.f, 1.f, 1.f, 1.f };
-	GLfloat ambient[]  = { 0.f, 0.f, 0.f, 1.f };
-	GLfloat position[] = { -10.f, 10.f, 0.f, 1.0f };
-
-	glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse);
-	glLightfv(GL_LIGHT0, GL_AMBIENT, ambient);
-	glLightfv(GL_LIGHT0, GL_SPECULAR, specular);
-	glLightfv(GL_LIGHT0, GL_POSITION, position);
-
-	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_LIGHTING);
-	glEnable(GL_LIGHT0);
-	glEnable(GL_COLOR_MATERIAL);
-	glutMainLoop();                 // Begin rendering sequence
+	
+	glutMainLoop();
 	return 0;
-}
-
-void checkGLError()
-{
-	int e = 0;                      // Error count
-	GLenum error = glGetError();    // Get first glError
-	while (GL_NO_ERROR != error)    // Loop until no errors found
-	{
-		e++;
-		printf("GL Error %i: %s\n", e, gluErrorString(error)); // Display error string
-		error = glGetError();                                  // Get next glError
-	}
 }
